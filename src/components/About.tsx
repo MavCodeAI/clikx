@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { useAnimation } from '@/contexts/AnimationContext';
 
 const About = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { duration, easeInOutCubic, variants, stagger } = useAnimation();
 
   // Counter animation
   const [projects, setProjects] = useState<number>(0);
@@ -96,18 +98,18 @@ const About = () => {
             <div>
               <motion.h2
                 className="text-3xl lg:text-4xl font-bold text-[var(--foreground)] mb-6"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
+                initial={variants.fadeInUp.initial}
+                whileInView={variants.fadeInUp.animate}
+                transition={{ duration: duration.normal, ease: easeInOutCubic, delay: duration.normal }}
                 viewport={{ once: true }}
               >
                 About Clikxo
               </motion.h2>
               <motion.p
                 className="text-lg text-[var(--text-secondary)] leading-relaxed mb-8"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
+                initial={variants.fadeInUp.initial}
+                whileInView={variants.fadeInUp.animate}
+                transition={{ duration: duration.normal, ease: easeInOutCubic, delay: duration.slow }}
                 viewport={{ once: true }}
               >
                 Clikxo is a creative studio by AB Darwesh & Ali Khan — crafting high-performance digital experiences.
@@ -126,10 +128,10 @@ const About = () => {
                 {skills.map((skill, index) => (
                   <motion.span
                     key={skill}
-                    className="px-4 py-2 bg-white rounded-full text-sm font-medium text-[var(--foreground)] shadow-sm border border-gray-200"
+                    className="px-4 py-2 bg-white rounded-full text-sm font-medium text-[var(--foreground)] shadow-sm border border-gray-200 hover-target cursor-pointer"
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4, delay: 1 + index * 0.1 }}
+                    transition={{ duration: duration.fast, delay: index * stagger.normal }}
                     viewport={{ once: true }}
                   >
                     {skill}

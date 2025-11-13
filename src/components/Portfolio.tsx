@@ -3,16 +3,18 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { projects } from '@/data/projects';
+import { useAnimation } from '@/contexts/AnimationContext';
 
 const Portfolio = () => {
+  const { duration, easeInOutCubic, variants, stagger } = useAnimation();
   return (
     <section className="py-20 px-6 bg-[var(--background)]">
       <div className="max-w-7xl mx-auto">
         <motion.div
           className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          initial={variants.fadeInUp.initial}
+          whileInView={variants.fadeInUp.animate}
+          transition={{ duration: duration.normal, ease: easeInOutCubic }}
           viewport={{ once: true }}
         >
           <h2 className="text-3xl lg:text-4xl font-bold text-[var(--foreground)] mb-4">
@@ -27,10 +29,10 @@ const Portfolio = () => {
           {projects.map((project, index) => (
             <motion.div
               key={project.id}
-              className="group relative overflow-hidden rounded-xl bg-white shadow-lg hover:shadow-2xl transition-shadow duration-300"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="group relative overflow-hidden rounded-xl bg-white shadow-lg hover:shadow-2xl transition-shadow duration-300 hover-target cursor-pointer"
+              initial={variants.fadeInUp.initial}
+              whileInView={variants.fadeInUp.animate}
+              transition={{ duration: duration.normal, ease: easeInOutCubic, delay: index * stagger.normal }}
               viewport={{ once: true }}
               whileHover={{ y: -5 }}
               style={{
@@ -39,15 +41,17 @@ const Portfolio = () => {
             >
               <Link href={`/projects/${project.id}`}>
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  {/* Placeholder for project thumbnail */}
-                  <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="w-16 h-16 bg-gray-300 rounded-full mx-auto mb-2 flex items-center justify-center">
-                        <span className="text-gray-600 text-xs">IMG</span>
-                      </div>
-                      <p className="text-sm text-gray-600">{project.title}</p>
-                    </div>
-                  </div>
+                  {/* Optimized project thumbnail */}
+                  <Image
+                    src="/images/projects/placeholder.jpg"
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                    priority={index < 3} // Prioritize first 3 images
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+IRjWjBqO6O2mhP//Z"
+                  />
 
                   {/* Hover overlay */}
                   <motion.div

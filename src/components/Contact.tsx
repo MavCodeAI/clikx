@@ -170,12 +170,13 @@ const Contact = () => {
                   <motion.button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-[var(--foreground)] text-[var(--background)] py-3 px-6 rounded-lg font-medium hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-[var(--foreground)] text-[var(--background)] py-3 px-6 rounded-lg font-medium hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 1.4 }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
+                    aria-label={isSubmitting ? "Sending message..." : "Send message"}
                   >
                     {isSubmitting ? (
                       <motion.div
